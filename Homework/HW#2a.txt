@@ -1,0 +1,27 @@
+SQL HW 02A
+
+Shaevaun Morlis
+1.	List the order of execution of a SQL query.
+-	FROM
+-	WHERE
+-	GROUP BY
+-	HAVING
+-	SELECT
+-	DISTINCT
+-	ORDER BY
+-	LIMIT/OFFSET
+
+2.	What does the from clause do?
+The FROM clause, are first executed to determine the total working set of data that is being queried. This includes subqueries in this clause, and can cause temporary tables to be created under the hood containing all the columns and rows of the tables being joined.
+3.	What does the where clause do?
+WHERE constraints are applied to the individual rows, and rows that do not satisfy the constraint are discarded. 
+4.	What does the group by clause do?
+The GROUP BY statement is often used with aggregate functions (COUNT, MAX, MIN, SUM, AVG) to group the result-set by one or more columns. 
+5.	What does the having clause do?
+The HAVING Clause enables you to specify conditions that filter which group results appear in the results. 
+6.	What does the select clause do? SELECT clause is the list of columns or SQL expressions that must be returned by the query. 
+7.	What does the distinct keyword do? The SQL DISTINCT keyword is used in conjunction with the SELECT statement to eliminate all the duplicate records and fetching only unique records. 
+8. What does the order by clause do? An ORDER BY clause in SQL specifies that a SQL SELECT statement returns a result set with the rows being sorted by the values of one or more columns. ... ORDER BY is the only way to sort the rows in the result set. 
+9. What does the limit clause do? The LIMIT clause is used to set an upper limit on the number of tuples returned by SQL. It is important to note that this clause is not supported by all SQL versions. The LIMIT clause can also be specified using the SQL 2008 OFFSET/FETCH FIRST clauses. 
+10. What does the top clause do? The SQL TOP clause is used to fetch a TOP N number or X percent records from a table. 
+11. What do the Offset clauses do? The OFFSET clause specifies the number of rows to skip before starting to return rows from the query. 

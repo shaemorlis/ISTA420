@@ -1,0 +1,36 @@
+.headers on
+
+--Name: Shae Morlis
+--File: Family.sql
+--Date: January 11, 2021
+
+drop table if exists family;
+create table family (
+	id int,
+	name text,
+	sex int,
+	role text
+);
+
+
+insert into family values (1, 'Charles', 1, 'parent' );
+insert into family values (2, 'Bonnie', 0, 'parent' );
+insert into family values (3, 'Casie', 0, 'child' );
+insert into family values (4, 'Jackson', 1, 'child' );
+
+select * from family;
+id|name|sex|role
+1|Charles|1|parent
+2|Bonnie|0|parent
+3|Casie|0|child
+4|Jackson|1|child
+
+select * from family where id = 1;
+id|name|sex|role
+1|Charles|1|parent
+
+select * from family where role like 'parent';
+id|name|sex|role
+1|Charles|1|parent
+2|Bonnie|0|parent
+	

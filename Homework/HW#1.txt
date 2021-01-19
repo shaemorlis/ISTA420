@@ -1,0 +1,39 @@
+Shaevaun Morlis
+HW#1 T-SQL Query Fundamentals
+
+1.	How does the book describe the difference between imperative and declarative languages?
+Unlike many programming languages, which use an imperative programming paradigm, SQL uses a declarative one. That is, SQL requires you to specify what you want to get and not how to get it, letting the RDBMS figure out the physical mechanics required to process your request. SQL has several categories of statements, including Data Definition Language (DDL), Data Manipulation Language (DML), and Data Control Language (DCL). 
+With cursors, you write imperative solutions—in other words, you’re responsible for defining how to process the data (declaring the cursor, opening it, looping through the cursor records, closing the cursor, and deallocating the cursor). With set-based solutions, you write declarative code where you mainly focus on the logical aspects of the solution—in other words, on what to get instead of on how to get it
+2.	Give an informal definition of database as used in the expression \relational database management system." Give an informal definition of database as used in the expression \Human Resources database."
+
+An RDBMS is a database management system based on the relational model (a semantic model for representing data), which in turn is based on two mathematical branches: set theory and predicate logic. HR databases are used by HR professionals (or the person responsible for HR in smaller businesses) to store personal information relating to their employees. 
+
+4. The book states that, \[t]he goal of the relational model is to enable consistent representation of
+data with minimal or no redundancy and without sacrificing completeness. . . " Briefly state your
+understanding of minimal or no redundancy and completeness. Why do you think that these values?
+are important? An RDBMS is supposed to implement the relational model and provide the means to store, manage, enforce the integrity of, and query data. The fact that the relational model is based on a strong mathematical foundation means that given a certain data-model instance (from which a physical database will later be generated), you can tell with certainty when a design is flawed, rather than relying solely on intuition.
+5. What is the difference between two-valued logic, three-valued logic, and four-valued logic? How does
+SQL implement three-valued predicate logic?
+That is, in two-valued predicate logic, a predicate is either true or false. If a predicate is not true, it must be false. Use of two-valued predicate logic follows a mathematical law called “the law of excluded middle.” However, some say that there’s room for three-valued (or even four-valued) predicate logic, considering cases where values are missing. A predicate involving a missing value yields neither true nor false—it yields unknown.
+Had SQL used two-valued predicate logic, there would not have been a difference between the definitions “accept TRUE” and “reject FALSE.” But with three-valued predicate logic, “accept TRUE” rejects UNKNOWN, whereas “reject FALSE” accepts it. With the predicate salary > 0 from the previous example, a NULL salary would cause the expression to evaluate to UNKNOWN. If this predicate appears in a query’s WHERE clause, a row with a NULL salary will be discarded.
+6. How does SQL enforce entity integrity? What is entity integrity? To enforce entity integrity, SQL lets you define the PRIMARY KEY and UNIQUE specifications. A table can only have one primary key, but several unique indexes. That is, you can define the PRIMARY KEY specification for one of the candidate keys, and UNIQUE for the rest of them. Entity integrity is concerned with ensuring that each row of a table has a unique and non-null primary key value; this is the same as saying that each row in a table represents a single instance of the entity type modelled by the table.
+7. How does SQL enforce referential integrity? What is referential integrity? The database procedure can check for foreign keys that reference the primary key and enforce the referential integrity. Referential integrity requires that a foreign key must have a matching primary key or it must be null. This constraint is specified between two tables (parent and child); it maintains the correspondence between rows in these tables. It means the reference from a row in one table to another table must be valid.
+8. What is a relation as defined in the textbook? relates
+9. Relational databases are based on three mathematical concepts: set theory, predicate logic, and rela-
+tional algebra.
+(a) Please give your brief understanding of set theory as described in the text. What is a set? Predicates. For example the set of all prime numbers can be defined as x. 
+(b) Please give your brief understanding of predicate logic as described in the text. What is predicate
+logic? True or False
+(c) Please give your brief understanding of relational algebra. What is selection? What is projection?
+Relational algebra is a procedural query language, which takes instances of relations as input and yields instances of relations as output.
+ 10. Is this table in first normal form? Why or why not? If it is not, how would you change it?
+Yes. Each cell has single value, entries in a column are the same type and the rows are uniquely identified. 
+11. Is this table in second normal form? Why or why not? If it is not, how would you change it? 
+Yes, all attributes are dependent on the key. 
+12. Is this table in third normal form? Why or why not? If it is not, how would you change it? No, because all fields are not determined by the key in the table. I believe you can merge name column and make address column and incorporate the city, state and zip. 
+13. 
+13. List the components of a four-part object name.
+To uniquely identify an object within SQL Server, you need all four parts: Server Name (1), Database Name (2), Schema Name (3) and Object Name (4)
+
+14. Defining data integrity As mentioned earlier, one of the great benefits of the relational model is that data integrity is an integral part of it. Data integrity enforced as part of the model—namely, as part of the table definitions—is considered declarative data integrity. Data integrity enforced with code—such as with stored procedures or triggers—is considered procedural data integrity. Data type and nullability choices for attributes and even the data model itself are examples of declarative data integrity constraints.
+
