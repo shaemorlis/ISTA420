@@ -1,0 +1,26 @@
+--Name: Shae Morlis
+--File:Lab04-shae.sql
+--Date: 02/01/2021
+
+-- 1 
+-- Write a query that returns all orders placed on the last day of
+-- activity that can be found in the Orders table
+-- Tables involved: TSQLV4 database, Orders table
+
+select o.orderid, o.custid, o.empid, o.orderdate from sales.orders o where o.orderdate = (select max(oo.orderdate) from sales.orders oo);
+
+-- 2 (Optional, Advanced)
+-- Write a query that returns all orders placed
+-- by the customer(s) who placed the highest number of orders
+-- * Note: there may be more than one customer
+--   with the same number of orders
+-- Tables involved: TSQLV4 database, Orders table
+select o.orderid, o.custid, o.empid, o.orderdate from sales.orders o where o.custid in (select top (1) with ties o1.custid
+from sales.orders o1 group by o1.custid order by count(o1.orderid) desc);
+
+-- 3
+-- Write a query that returns employees
+-- who did not place orders on or after May 1st, 2016
+-- Tables involved: TSQLV4 database, Employees and Orders tables
+select e.empid, e.firstname, e.lastname from hr.employees e where e.empid not in 
+(select distinct o.empid from sales.orders o where o.orderdate >= '2016-05-01');
