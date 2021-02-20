@@ -1,0 +1,54 @@
+-- Name: Shaevaun Morlis
+-- File: sqlQuiz5-shae.sql
+-- Date: February 9, 2021
+use tsqlv4;
+
+--1. productid : the product ID, aggregated by product ID
+
+--2. monthyear : the month and year aggregation, includes all products sold during the month
+
+--3. thisMonth : the total quantity of all of this product sold this month
+
+--4. lastMonth : the total quantity of all of the product sold last month
+
+--5. diff : the difference between the sales of this month and last month
+
+--6. pctIncDec : the percent increase/decrease between this month and last month
+
+--7. running : the running total of monthly sales for this product
+
+--8. pctChange : the percent of this months sales to last months sales
+
+--9. totalPerProduct : grand total of all of this product sold for all months
+
+--10. pctLinePerProduct : percent of the total sold this month against the grand total for the product
+
+with c1 as (
+select od.productid, 
+DATEFROMPARTS(year(o.orderdate), month(o.orderdate),1) as monthyear, 
+qty
+from sales.OrderDetails od join Sales.Orders o on od.orderid = o.orderid),
+c2 as(
+select productid, monthyear, sum(qty) as thisMonth
+from c1
+group by productid, monthyear),
+c3 as(
+select *,
+    LAG(thisMonth) over(partition by productid
+                        order by monthyear) as lastMonth,
+    thisMonth - LAG(thisMonth) over(partition by productid
+                            order by monthyear) as diff
+
+from c2),
+c4 as(
+select *,
+     cast(100.0 * diff/lastMonth as decimal(10,2))pcIncDec,
+     sum(thisMonth) over(partition by productid
+                         order by monthyear
+                          rows between unbounded preceding and current row) as running,
+    cast(100 * thisMonth / lastMonth as decimal(10,2)) as pctChange,
+    sum(thisMonth) over(partition by productid) as totalPerProduct,
+    cast(100.0 * thisMonth / (sum(thisMonth) over(partition by productid)) as decimal(10,2)) as pctLinePerProduct
+from c3
+)
+select * from c4;

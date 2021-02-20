@@ -1,0 +1,48 @@
+.headers on
+
+--Name: Shae Morlis
+--File: TSQLQuiz2.sql
+-- Date: January 20, 2021
+
+--1. How many seafood products do we have?
+select count(*) from products where categoryID = 8;
+count(*)
+12
+
+--2. What are the names and IDs of our seafood products?
+select productID, productname from products where categoryID = 8;
+ProductID|ProductName
+10|Ikura
+13|Konbu
+18|Carnarvon Tigers
+30|Nord-Ost Matjeshering
+36|Inlagd Sill
+37|Gravad lax
+40|Boston Crab Meat
+41|Jack's New England Clam Chowder
+45|Rogede sild
+46|Spegesild
+58|Escargots de Bourgogne
+73|Röd Kaviar
+
+--3. What is the average price of our seafood products?
+
+
+--4. What is our highest priced seafood product, and how much does it cost?
+
+
+--5. What is our lowest priced seafood product, and how much does it cost?
+
+
+--6. How many customers do we have in Denmark?
+select count(*) from customers where country in('Denmark');
+count(*)
+2
+
+--7. What are the customer names and IDs of our Danish customers?
+select customerID, contactname from customers where country in('Denmark');
+CustomerID|ContactName
+SIMOB|Jytte Petersen
+VAFFE|Palle Ibsen
+
+--8. Which customers do NOT have a fax number? This one is very tricky!
