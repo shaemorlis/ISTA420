@@ -1,0 +1,38 @@
+.headers on
+
+--Name: Shae Morlis
+--File: Airplane.sql
+--Date: January 13, 2021
+
+drop table if exists airplane;
+
+create table airplane (
+
+	AirplaneTail varchar primary key,
+	Yr int,
+	Make text,
+	Model varchar,
+	FlightHrs int,
+	Propolsion text 
+);
+
+
+insert into airplane values ('N45321','1993','Airbus','A380',102502,'Jet');
+insert into airplane values ('N21235','1994','Boeing','747',103541,'Jet');
+insert into airplane values ('N31699','2015','Cesna','172',4253,'Propeller');
+insert into airplane values ('N53632','2017','Piper','Cub',4575,'Propeller');
+
+select * from airplane;
+AirplaneTail|Yr|Make|Model|FlightHrs|Propolsion
+N45321|1993|Airbus|A380|102502|Jet
+N21235|1994|Boeing|747|103541|Jet
+N31699|2015|Cesna|172|4253|Propeller
+N53632|2017|Piper|Cub|4575|Propeller
+select * from airplane where Yr > 2000;
+AirplaneTail|Yr|Make|Model|FlightHrs|Propolsion
+N31699|2015|Cesna|172|4253|Propeller
+N53632|2017|Piper|Cub|4575|Propeller
+select * from airplane where FlightHrs > 5000;
+AirplaneTail|Yr|Make|Model|FlightHrs|Propolsion
+N45321|1993|Airbus|A380|102502|Jet
+N21235|1994|Boeing|747|103541|Jet

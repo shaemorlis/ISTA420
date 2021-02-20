@@ -1,0 +1,233 @@
+/*1. Create an appropriate table schema.*/
+	CREATE SCHEMA People;
+	Go
+
+/*2. Insert the CSV data into the table you just created.
+		1. Right clik database -> Tasks -> Import Flat File
+		2. Select .txt file, enter new table name and select the Table Schema
+		3. Click and Finish
+*/
+
+/*	3. Delete the column that contains the path to the images.*/
+	ALTER TABLE People.ex05
+	DROP COLUMN Image_path;
+
+/* 4. Delete the rst record from your table using the output clause */
+	DELETE People.ex05 
+		OUTPUT DELETED.*
+	WHERE ID=1;
+
+/* 5. Bring the data up to date by updating the last row. Use the output clause*/
+	UPDATE People.ex05 
+		SET Date_Left_Office='20141104', Assassination_Attempt=0, Assassinated=0
+		OUTPUT DELETED.*
+	WHERE ID=44
+
+/* 6. Bring the data up to date by adding a new row. Use the output clause*/
+	INSERT INTO [People].[ex05]
+           ([ID]
+           ,[Last_Name]
+           ,[First_Name]
+           ,[Middle_Name]
+           ,[Order_of_Presidency]
+           ,[Date_of_Birth]
+           ,[Date_of_Death]
+           ,[Town_or_County_of_Birth]
+           ,[State_of_Birth]
+           ,[Home_State]
+           ,[Party_Affiliation]
+           ,[Date_Took_Office]
+           ,[Date_Left_Office]
+           ,[Assassination_Attempt]
+           ,[Assassinated]
+           ,[Religious_Affiliation])
+	OUTPUT INSERTED.*
+     VALUES
+           (45
+           ,'Trump'
+           ,'Donald'
+           ,''
+           ,45
+           ,'1960-01-01'
+           ,NULL
+           ,''
+           ,''
+           ,''
+           ,'Republican'
+           ,'2017-11-04'
+           ,'2021-11-04'
+           ,0
+           ,0
+           ,NULL)
+
+/* 7. How many presidents from each state belonged to the various political parties? Aggregate by party and state. Note that this will in effect be a pivot table.*/
+	SELECT Party_Affiliation, Home_State, COUNT(*) Total
+	FROM People.ex05
+	GROUP BY Party_Affiliation, Home_State
+	ORDER BY Party_Affiliation, Home_State
+
+	Party_Affiliation	Home_State	Total
+Democratic	Arkansas	1
+Democratic	Georgia	1
+Democratic	Illinois	1
+Democratic	Massachusetts	1
+Democratic	Missouri	1
+Democratic	New Hampshire	1
+Democratic	New Jersey	1
+Democratic	New York	4
+Democratic	Pennsylvania	1
+Democratic	Tennessee	2
+Democratic	Texas	1
+Democratic/National Union	Tennessee	1
+Democratic-Republican	Virginia	3
+Democratic-Republican/National Republican	Massachusetts	1
+Federalist	Massachusetts	1
+Republican		1
+Republican	California	2
+Republican	Indiana	1
+Republican	Iowa	1
+Republican	Massachusetts	1
+Republican	Michigan	1
+Republican	New York	2
+Republican	Ohio	6
+Republican	Texas	3
+Republican/National Union	Illinois	1
+Whig	Louisiana	1
+Whig	New York	1
+Whig	Ohio	1
+Whig	Virginia	1
+
+/* 8. Create a report showing the number of days each president was in office.*/
+	SELECT Last_Name, First_Name, DATEDIFF(D, Date_Took_Office, Date_Left_Office) DaysInOffice FROM People.ex05
+
+
+Last_Name	First_Name	DaysInOffice
+Adams	John	1460
+Jefferson	Thomas	2922
+Madison	James	2922
+Monroe	James	2922
+Adams	John	1461
+Jackson	Andrew	2922
+Van Buren	Martin	1461
+Harrison	William	31
+Tyler	John	1430
+Polk	James	1461
+Taylor	Zachary	492
+Fillmore	Millard	969
+Pierce	Franklin	1461
+Buchanan	James	1461
+Lincoln	Abraham	1503
+Johnson	Andrew	1419
+Grant	Ulysses	2922
+Hayes	Rutherford	1461
+Garfield	James	199
+Arthur	Chester	1262
+Cleveland	Grover	1461
+Harrison	Benjamin	1461
+Cleveland	Grover	1461
+McKinley	William	1654
+Roosevelt	Theodore	2728
+Taft	William	1461
+Wilson	Woodrow	2922
+Harding	Warren	881
+Coolidge	Calvin	2041
+Hoover	Herbert	1461
+Roosevelt	Franklin	4422
+Truman	Harry	2840
+Eisenhower	Dwight	2922
+Kennedy	John	1036
+Johnson	Lyndon	1886
+Nixon	Richard	2027
+Ford	Gerald	895
+Carter	Jimmy	1461
+Reagan	Ronald	2922
+Bush	George	1461
+Clinton	William	2922
+Bush	George	2922
+Obama	Barack	3210
+Trump	Donald	1461
+
+/* 9. Create a report showing the age (in years) of each present when he took office.*/
+	SELECT Last_Name, First_Name, DATEDIFF(YY, Date_of_Birth, Date_Took_Office) AgeAsPresident FROM People.ex05
+
+Last_Name	First_Name	AgeAsPresident
+Adams	John	62
+Jefferson	Thomas	58
+Madison	James	58
+Monroe	James	59
+Adams	John	58
+Jackson	Andrew	62
+Van Buren	Martin	55
+Harrison	William	68
+Tyler	John	51
+Polk	James	50
+Taylor	Zachary	65
+Fillmore	Millard	50
+Pierce	Franklin	49
+Buchanan	James	66
+Lincoln	Abraham	52
+Johnson	Andrew	57
+Grant	Ulysses	47
+Hayes	Rutherford	55
+Garfield	James	50
+Arthur	Chester	51
+Cleveland	Grover	48
+Harrison	Benjamin	56
+Cleveland	Grover	56
+McKinley	William	54
+Roosevelt	Theodore	43
+Taft	William	52
+Wilson	Woodrow	57
+Harding	Warren	56
+Coolidge	Calvin	51
+Hoover	Herbert	55
+Roosevelt	Franklin	51
+Truman	Harry	61
+Eisenhower	Dwight	63
+Kennedy	John	44
+Johnson	Lyndon	55
+Nixon	Richard	56
+Ford	Gerald	61
+Carter	Jimmy	53
+Reagan	Ronald	70
+Bush	George	65
+Clinton	William	47
+Bush	George	55
+Obama	Barack	48
+Trump	Donald	57
+
+/* 10. See if there is any correlation between a president's party and reported religion, or lack of reported religion.*/
+	SELECT Party_Affiliation, Religious_Affiliation, COUNT(*) Total
+	FROM People.ex05
+	GROUP BY Party_Affiliation, Religious_Affiliation
+		ORDER By Party_Affiliation, COUNT(*) DESC, Religious_Affiliation
+
+Party_Affiliation	Religious_Affiliation	Total
+Democratic	Presbyterian	5
+Democratic	Baptist	3
+Democratic	NULL	1
+Democratic	Disciples of Christ	1
+Democratic	Dutch Reformed	1
+Democratic	Episcopalian	1
+Democratic	Methodist	1
+Democratic	Roman Catholic	1
+Democratic	Unaffiliated Christian	1
+Democratic/National Union	NULL	1
+Democratic-Republican	Deist/Episcopalian	2
+Democratic-Republican	NULL	1
+Democratic-Republican/National Republican	Unitarian	1
+Federalist	Unitarian	1
+Republican	Episcopalian	3
+Republican	Presbyterian	3
+Republican	NULL	2
+Republican	Methodist	2
+Republican	Quaker	2
+Republican	Baptist	1
+Republican	Congregationalist	1
+Republican	Disciples of Christ	1
+Republican	Dutch Reformed	1
+Republican	Presbyterian/Methodist	1
+Republican	Unitarian	1
+Republican/National Union	NULL	1
+Whig	Episcopalian	3
+Whig	Unitarian	1

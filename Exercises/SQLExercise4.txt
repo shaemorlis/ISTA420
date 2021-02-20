@@ -1,0 +1,204 @@
+--Name: Shae Morlis
+--File: SQLexercise4.sql
+-- Date: February 06, 2021
+
+/*
+1. Use a derived table to build a query that returns the number of distinct products per year that each
+customer ordered. Use internal aliasing. Use a variable to set the customer number. For example, if
+the customer ID is 1234, the query should report the number of distinct products ordered by customer
+1234 for the years 2014, 2015, and 2016.
+*/
+use TSQLV4;
+DECLARE @CustID INT=30
+SELECT OrderYear, COUNT(*) UniqueProducts
+FROM (
+	SELECT DISTINCT Year(orderdate) OrderYear, productid
+	FROM Sales.OrderDetails OD 
+		INNER JOIN Sales.Orders O ON O.orderid=OD.orderid
+		INNER JOIN Sales.Customers C ON C.custid=O.custid
+	WHERE c.custid=@CustID
+) T
+GROUP BY OrderYear
+
+RESULT
+=================
+OrderYear	UniqueProducts
+2014	3
+2015	6
+2016	16
+
+/*
+2. Use multiple common table expressions to build a query that returns the number of distinct products
+per year that each country's customers ordered. Use external aliasing. Use a variable to set the country
+name. For example, if the country name is France, the query should report the number of distinct
+products ordered by French customers for the years 2014, 2015, and 2016.
+*/
+
+DECLARE @Country VARCHAR(50)='France';
+WITH
+T1  AS (
+	SELECT DISTINCT C.country, YEAR(orderdate) YYYY, P.productid FROM Production.Products P
+		INNER JOIN Sales.OrderDetails OD ON P.productid=OD.productid
+		INNER JOIN Sales.Orders O ON O.orderid=OD.orderid
+		INNER JOIN Sales.Customers C ON O.custid=C.custid
+	WHERE C.country=@Country AND YEAR(orderdate)=2014
+	GROUP BY C.country, YEAR(orderdate), P.productid
+),
+T2  AS (
+	SELECT DISTINCT C.country, YEAR(orderdate) YYYY, P.productid FROM Production.Products P
+		INNER JOIN Sales.OrderDetails OD ON P.productid=OD.productid
+		INNER JOIN Sales.Orders O ON O.orderid=OD.orderid
+		INNER JOIN Sales.Customers C ON O.custid=C.custid
+	WHERE C.country=@Country AND YEAR(orderdate)=2015
+	GROUP BY C.country, YEAR(orderdate), P.productid
+),
+T3  AS (
+	SELECT DISTINCT C.country, YEAR(orderdate) YYYY, P.productid FROM Production.Products P
+		INNER JOIN Sales.OrderDetails OD ON P.productid=OD.productid
+		INNER JOIN Sales.Orders O ON O.orderid=OD.orderid
+		INNER JOIN Sales.Customers C ON O.custid=C.custid
+	WHERE C.country=@Country AND YEAR(orderdate)=2016
+	GROUP BY C.country, YEAR(orderdate), P.productid
+)
+select country, YYYY, count(*) TotalProducts from T1 GROUP BY country, YYYY
+UNION
+select country, YYYY, count(*) TotalProducts from T2 GROUP BY country, YYYY
+UNION
+select country, YYYY, count(*) TotalProducts from T3 GROUP BY country, YYYY
+
+
+
+===============
+shipcountry	YYYY	TotalProducts
+France	2014	28
+France	2015	46
+France	2016	39
+
+/*
+3. Create a view that shows, for each year, the total dollar amount spent by customers in each country
+for all the years in the database.
+TEST:
+SELECT * FROM dbo.OrdersByYearCountryView ORDER BY OrderYear
+*/
+
+CREATE VIEW dbo.OrdersByYearCountryView
+AS
+SELECT YEAR([orderdate]) OrderYear, Country, SUM(unitprice*qty) Amount
+  FROM [Sales].[Orders] O
+  INNER JOIN Sales.OrderDetails OD ON O.orderid=OD.orderid
+  INNER JOIN Sales.Customers C ON O.custid=C.custid
+GROUP BY YEAR([orderdate]) ,[country]
+
+
+
+
+
+/*
+4. Create an inline table valued function that accepts as a parameter a country name and returns a table
+with the distinct products ordered by customers from that country. Products are to be identied by
+both product ID and product name.
+TEST
+SELECT * FROM dbo.ProductsByCountry('USA')
+*/
+
+CREATE FUNCTION dbo.ProductsByCountry
+(	
+	@Country VARCHAR(50)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	SELECT DISTINCT P.productid, productname
+	  FROM Production.Products P
+		INNER JOIN Sales.OrderDetails OD ON P.productid=OD.productid
+		INNER JOIN Sales.Orders O ON O.orderid=OD.orderid
+		INNER JOIN Sales.Customers C ON C.custid=O.custid
+		WHERE country=@Country
+)
+GO
+
+
+/*
+5. Use the CROSS APPLY operator to create a query showing the top three products shipped to customers
+in each country. Your report should contain the name of the country, the product id, the product name,
+and the number of products shipped to customers in that country.
+*/
+	SELECT DISTINCT O.shipcountry, CA.*
+	FROM Sales.Orders O
+	CROSS APPLY(
+		SELECT TOP 3 productname, COUNT(*) Orders
+		FROM Sales.OrderDetails OD
+			INNER JOIN Production.Products P ON P.productid=OD.productid
+			INNER JOIN Sales.Orders O2 ON O2.orderid=OD.orderid
+		WHERE O.shipcountry=O2.shipcountry
+		GROUP BY productname
+	) CA
+
+
+RESULT
+==============
+shipcountry	productname	Orders
+Argentina	Product BWRLG	1
+Argentina	Product APITJ	1
+Argentina	Product ASTMN	1
+Austria	Product APITJ	1
+Austria	Product ASTMN	1
+Austria	Product AQOKR	1
+Belgium	Product AQOKR	1
+Belgium	Product ASTMN	1
+Belgium	Product ACRVI	1
+Brazil	Product AOZBW	1
+Brazil	Product ACRVI	2
+Brazil	Product APITJ	3
+Canada	Product BKAZJ	1
+Canada	Product APITJ	1
+Canada	Product ASTMN	2
+Denmark	Product AQOKR	1
+Denmark	Product ASTMN	1
+Denmark	Product APITJ	1
+Finland	Product BKAZJ	1
+Finland	Product AQOKR	1
+Finland	Product ACRVI	1
+France	Product APITJ	5
+France	Product ASTMN	3
+France	Product BIUDV	1
+Germany	Product AOZBW	1
+Germany	Product APITJ	5
+Germany	Product ACRVI	3
+Ireland	Product AOZBW	1
+Ireland	Product APITJ	2
+Ireland	Product ACRVI	2
+Italy	Product AQOKR	1
+Italy	Product ASTMN	1
+Italy	Product APITJ	1
+Mexico	Product ASTMN	3
+Mexico	Product AQOKR	1
+Mexico	Product APITJ	1
+Norway	Product HMLNI	1
+Norway	Product CKEDC	1
+Norway	Product BKGEA	1
+Poland	Product APITJ	1
+Poland	Product BKAZJ	1
+Poland	Product ACRVI	1
+Portugal	Product HHYDP	1
+Portugal	Product JYGFE	1
+Portugal	Product APITJ	1
+Spain	Product AQOKR	1
+Spain	Product BIUDV	1
+Spain	Product APITJ	1
+Sweden	Product ACRVI	1
+Sweden	Product APITJ	3
+Sweden	Product BKGEA	1
+Switzerland	Product APITJ	2
+Switzerland	Product ACRVI	1
+Switzerland	Product ASTMN	1
+UK	Product APITJ	4
+UK	Product AOZBW	1
+UK	Product AQOKR	1
+USA	Product ACRVI	4
+USA	Product APITJ	4
+USA	Product AOZBW	1
+Venezuela	Product ACRVI	2
+Venezuela	Product AQOKR	2
+Venezuela	Product APITJ	2

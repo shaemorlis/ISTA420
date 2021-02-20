@@ -1,0 +1,1353 @@
+SQL ex6
+
+/*(a) How many distinct products does ClassicModels sell?*/
+	select count(*) from products WHERE productLine='Classic Cars'
+
+	38
+
+/* (b) Report the name and city of customers who don't have sales representatives?*/
+	SELECT customerName, city FROM customers WHERE salesRepEmployeeNumber IS NULL
+
+customerName	city
+Havel & Zbyszek Co	Warszawa
+Porto Imports Co.	Lisboa
+Asian Shopping Network, Co	Singapore
+Natï¿½rlich Autos	Cunewalde
+ANG Resellers	Madrid
+Messner Shopping Network	Frankfurt
+Franken Gifts, Co	Mï¿½nchen
+BG&E Collectables	Fribourg
+Schuyler Imports	Amsterdam
+Der Hund Imports	Berlin
+Cramer Spezialitï¿½ten, Ltd	Brandenburg
+Asian Treasures, Inc.	Cork
+SAR Distributors, Co	Chempet
+Kommission Auto	Mï¿½nster
+Lisboa Souveniers, Inc	Lisboa
+Stuttgart Collectable Exchange	Stuttgart
+Feuer Online Stores, Inc	Leipzig
+Warburg Exchange	Aachen
+Anton Designs, Ltd.	Madrid
+Mit Vergnï¿½gen & Co.	Mannheim
+Kremlin Collectables, Co.	Saint Petersburg
+Raanan Stores, Inc	Herzlia
+
+/* (c) What are the names of executives with VP or Manager in their title? Use the CONCAT function to combine the employee's rst name and last name into a single eld for reporting.*/
+	SELECT CONCAT(lastName, ' ', firstName) FullName  FROM employees WHERE jobTitle LIKE '%VP%' OR jobTitle LIKE '%Manager%'
+
+Patterson Mary
+Firrelli Jeff
+Patterson William
+Bondur Gerard
+Bow Anthony
+
+/* (d) Which orders have a value greater than $5,000? */
+	select o.orderNumber from orders o inner join orderDetails od on o.orderNumber=od.orderNumber
+	group by o.orderNumber
+	having SUM(od.priceEach*od.quantityOrdered)>5000
+
+orderNumber
+10100
+10101
+10102
+10103
+10104
+10105
+10106
+10107
+10108
+10109
+10110
+10111
+10112
+10113
+10114
+10115
+10117
+10119
+10120
+10121
+10122
+10123
+10124
+10125
+10126
+10127
+10128
+10129
+10130
+10131
+10133
+10134
+10135
+10136
+10137
+10138
+10139
+10140
+10141
+10142
+10143
+10145
+10146
+10147
+10148
+10149
+10150
+10151
+10152
+10153
+10154
+10155
+10156
+10157
+10159
+10160
+10161
+10162
+10163
+10164
+10165
+10166
+10167
+10168
+10169
+10170
+10171
+10172
+10173
+10174
+10175
+10176
+10177
+10178
+10179
+10180
+10181
+10182
+10183
+10184
+10185
+10186
+10187
+10188
+10190
+10191
+10192
+10193
+10194
+10195
+10196
+10197
+10198
+10199
+10200
+10201
+10202
+10203
+10204
+10205
+10206
+10207
+10208
+10209
+10210
+10211
+10212
+10213
+10214
+10215
+10216
+10217
+10218
+10219
+10220
+10221
+10222
+10223
+10224
+10225
+10226
+10227
+10228
+10229
+10230
+10231
+10232
+10233
+10234
+10235
+10236
+10237
+10238
+10239
+10240
+10241
+10243
+10244
+10245
+10246
+10247
+10248
+10249
+10250
+10251
+10252
+10253
+10254
+10255
+10257
+10258
+10259
+10260
+10261
+10262
+10263
+10264
+10265
+10266
+10267
+10268
+10269
+10270
+10271
+10272
+10273
+10274
+10275
+10276
+10278
+10279
+10280
+10281
+10282
+10283
+10284
+10285
+10287
+10288
+10289
+10290
+10291
+10292
+10293
+10295
+10296
+10297
+10298
+10299
+10300
+10301
+10302
+10304
+10305
+10306
+10307
+10308
+10309
+10310
+10311
+10312
+10313
+10314
+10315
+10316
+10318
+10319
+10320
+10321
+10322
+10323
+10324
+10325
+10326
+10327
+10328
+10329
+10330
+10331
+10332
+10333
+10334
+10335
+10336
+10337
+10338
+10339
+10340
+10341
+10342
+10343
+10344
+10346
+10347
+10348
+10349
+10350
+10351
+10352
+10353
+10354
+10355
+10356
+10357
+10358
+10359
+10360
+10361
+10362
+10363
+10365
+10366
+10367
+10368
+10369
+10370
+10371
+10372
+10373
+10374
+10375
+10377
+10378
+10379
+10380
+10381
+10382
+10383
+10384
+10385
+10386
+10388
+10389
+10390
+10391
+10392
+10393
+10394
+10395
+10396
+10397
+10398
+10399
+10400
+10401
+10402
+10403
+10404
+10405
+10406
+10407
+10410
+10411
+10412
+10413
+10414
+10415
+10416
+10417
+10418
+10419
+10420
+10421
+10422
+10423
+10424
+10425
+
+/* (e) Report the account representative for each customer. */
+	SELECT customerName, CONCAT(lastName, ' ', firstName) Representative FROM customers c left join employees e on c.salesRepEmployeeNumber=e.employeeNumber
+
+customerName	Representative
+Atelier graphique	Hernandez Gerard
+Signal Gift Stores	Thompson Leslie
+Australian Collectors, Co.	Fixter Andy
+La Rochelle Gifts	Hernandez Gerard
+Baane Mini Imports	Jones Barry
+Mini Gifts Distributors Ltd.	Jennings Leslie
+Havel & Zbyszek Co	 
+Blauer See Auto, Co.	Jones Barry
+Mini Wheels Co.	Jennings Leslie
+Land of Toys Inc.	Vanauf George
+Euro+ Shopping Channel	Hernandez Gerard
+Volvo Model Replicas, Co	Jones Barry
+Danish Wholesale Imports	Castillo Pamela
+Saveley & Henriot, Co.	Bondur Loui
+Dragon Souveniers, Ltd.	Nishi Mami
+Muscle Machine Inc	Tseng Foon Yue
+Diecast Classics Inc.	Patterson Steve
+Technics Stores Inc.	Jennings Leslie
+Handji Gifts& Co	Marsh Peter
+Herkku Gifts	Jones Barry
+American Souvenirs Inc	Tseng Foon Yue
+Porto Imports Co.	 
+Daedalus Designs Imports	Hernandez Gerard
+La Corne D'abondance, Co.	Bondur Loui
+Cambridge Collectables Co.	Firrelli Julie
+Gift Depot Inc.	Vanauf George
+Osaka Souveniers Co.	Nishi Mami
+Vitachrome Inc.	Tseng Foon Yue
+Toys of Finland, Co.	Bott Larry
+AV Stores, Co.	Bott Larry
+Clover Collections, Co.	Jones Barry
+Auto-Moto Classics Inc.	Patterson Steve
+UK Collectables, Ltd.	Bott Larry
+Canadian Gift Exchange Network	Vanauf George
+Online Mini Collectables	Firrelli Julie
+Toys4GrownUps.com	Thompson Leslie
+Asian Shopping Network, Co	 
+Mini Caravy	Hernandez Gerard
+King Kong Collectables, Co.	Nishi Mami
+Enaco Distributors	Gerard Martin
+Boards & Toys Co.	Thompson Leslie
+Natï¿½rlich Autos	 
+Heintze Collectables	Castillo Pamela
+Quï¿½bec Home Shopping Network	Tseng Foon Yue
+ANG Resellers	 
+Collectable Mini Designs Co.	Thompson Leslie
+giftsbymail.co.uk	Bott Larry
+Alpha Cognac	Hernandez Gerard
+Messner Shopping Network	 
+Amica Models & Co.	Castillo Pamela
+Lyon Souveniers	Bondur Loui
+Auto Associï¿½s & Cie.	Hernandez Gerard
+Toms Spezialitï¿½ten, Ltd	Jones Barry
+Royal Canadian Collectables, Ltd.	Vanauf George
+Franken Gifts, Co	 
+Anna's Decorations, Ltd	Fixter Andy
+Rovelli Gifts	Castillo Pamela
+Souveniers And Things Co.	Fixter Andy
+Marta's Replicas Co.	Patterson Steve
+BG&E Collectables	 
+Vida Sport, Ltd	Gerard Martin
+Norway Gifts By Mail, Co.	Jones Barry
+Schuyler Imports	 
+Der Hund Imports	 
+Oulu Toy Supplies, Inc.	Bott Larry
+Petit Auto	Castillo Pamela
+Mini Classics	Vanauf George
+Mini Creations Ltd.	Firrelli Julie
+Corporate Gift Ideas Co.	Jennings Leslie
+Down Under Souveniers, Inc	Marsh Peter
+Stylish Desk Decors, Co.	Bott Larry
+Tekni Collectables Inc.	Vanauf George
+Australian Gift Network, Co	Fixter Andy
+Suominen Souveniers	Bott Larry
+Cramer Spezialitï¿½ten, Ltd	 
+Classic Gift Ideas, Inc	Firrelli Julie
+CAF Imports	Gerard Martin
+Men 'R' US Retailers, Ltd.	Thompson Leslie
+Asian Treasures, Inc.	 
+Marseille Mini Autos	Bondur Loui
+Reims Collectables	Bondur Loui
+SAR Distributors, Co	 
+GiftsForHim.com	Marsh Peter
+Kommission Auto	 
+Gifts4AllAges.com	Patterson Steve
+Online Diecast Creations Co.	Patterson Steve
+Lisboa Souveniers, Inc	 
+Precious Collectables	Gerard Martin
+Collectables For Less Inc.	Firrelli Julie
+Royale Belge	Castillo Pamela
+Salzburg Collectables	Castillo Pamela
+Cruz & Sons Co.	Nishi Mami
+L'ordine Souveniers	Castillo Pamela
+Tokyo Collectables, Ltd	Nishi Mami
+Auto Canal+ Petit	Bondur Loui
+Stuttgart Collectable Exchange	 
+Extreme Desk Decorations, Ltd	Marsh Peter
+Bavarian Collectables Imports, Co.	Jones Barry
+Classic Legends Inc.	Tseng Foon Yue
+Feuer Online Stores, Inc	 
+Gift Ideas Corp.	Vanauf George
+Scandinavian Gift Ideas	Jones Barry
+The Sharp Gifts Warehouse	Jennings Leslie
+Mini Auto Werke	Castillo Pamela
+Super Scale Inc.	Tseng Foon Yue
+Microscale Inc.	Tseng Foon Yue
+Corrida Auto Replicas, Ltd	Gerard Martin
+Warburg Exchange	 
+FunGiftIdeas.com	Patterson Steve
+Anton Designs, Ltd.	 
+Australian Collectables, Ltd	Fixter Andy
+Frau da Collezione	Castillo Pamela
+West Coast Collectables Co.	Thompson Leslie
+Mit Vergnï¿½gen & Co.	 
+Kremlin Collectables, Co.	 
+Raanan Stores, Inc	 
+Iberia Gift Imports, Corp.	Gerard Martin
+Motor Mint Distributors Inc.	Vanauf George
+Signal Collectibles Ltd.	Jennings Leslie
+Double Decker Gift Stores, Ltd	Bott Larry
+Diecast Collectables	Firrelli Julie
+Kelly's Gift Shop	Marsh Peter
+
+/* (f) Report total payments for Atelier graphique. */
+	SELECT SUM(amount)
+	FROM payments p inner join customers c on p.customerNumber=c.customerNumber
+	where c.customerName='Atelier graphique'
+
+	24179.96
+
+/* (g) Report the total payments by date*/
+	SELECT paymentDate, SUM(amount) TotalPayment FROM payments
+	GROUP By paymentDate
+	order by paymentDate
+
+paymentDate	TotalPayment
+2003-01-16	12133.25
+2003-01-28	11432.34
+2003-01-30	6864.05
+2003-02-16	54702
+2003-02-20	58871.11
+2003-02-25	44621.96
+2003-03-02	56181.32
+2003-03-09	55245.02
+2003-03-12	25783.76
+2003-03-20	27398.82
+2003-03-27	51017.92
+2003-04-09	28444.58
+2003-04-11	12398.56
+2003-04-16	24777.41
+2003-04-19	1711.26
+2003-04-20	38217.41
+2003-04-22	43657.47
+2003-05-09	4219.2
+2003-05-12	38629.14
+2003-05-20	50397.66
+2003-05-21	18971.96
+2003-05-25	52481.84
+2003-05-31	9738.18
+2003-06-05	16560.3
+2003-06-06	33847.62
+2003-06-13	61073.21
+2003-06-18	68462.15
+2003-06-25	20350.95
+2003-07-05	2476.8
+2003-07-06	7277.35
+2003-07-07	32376.29
+2003-07-16	37754.33
+2003-07-18	25624.88
+2003-07-19	39615.82
+2003-07-21	32397.4
+2003-08-03	28397.26
+2003-08-05	42031.83
+2003-08-15	122368.67
+2003-08-16	31569.43
+2003-08-20	45738.39
+2003-08-22	1637.2
+2003-09-05	55776.12
+2003-09-15	7600.12
+2003-09-16	34992.4
+2003-09-28	81291.79
+2003-10-06	37501.58
+2003-10-17	10640.29
+2003-10-18	32399.94
+2003-10-20	26797.21
+2003-10-24	69237.9
+2003-10-26	53502.3
+2003-10-27	63756.43
+2003-10-28	1474.66
+2003-10-31	65606.36
+2003-11-03	95678.88
+2003-11-06	48710.92
+2003-11-08	11861.69
+2003-11-13	41791.95
+2003-11-15	55649.39
+2003-11-18	122922.5
+2003-11-19	26115.8
+2003-11-20	14938.15
+2003-11-22	86972.52
+2003-11-23	42688.31
+2003-11-24	126580.5
+2003-11-25	50360.89
+2003-11-28	40061.66
+2003-11-29	77923.98
+2003-12-02	22841.96
+2003-12-03	95277.18
+2003-12-04	32054.3
+2003-12-05	106480.21
+2003-12-07	70046.13
+2003-12-09	129506.42
+2003-12-10	79413.66
+2003-12-11	25431.88
+2003-12-14	44009.31
+2003-12-16	23294.8
+2003-12-18	38662.21
+2003-12-22	64316.09
+2003-12-26	185759.51
+2004-01-16	54536.87
+2004-01-18	23889.32
+2004-01-19	50490.64
+2004-01-28	51172.65
+2004-01-30	65165.17
+2004-01-31	8477.22
+2004-02-06	24995.47
+2004-02-10	5759.42
+2004-02-13	37850.08
+2004-02-17	7278.98
+2004-02-28	24219.59
+2004-02-29	16118.48
+2004-03-01	38784.47
+2004-03-03	18800.09
+2004-03-10	49637.57
+2004-03-13	50432.55
+2004-03-15	107667.36
+2004-03-18	46802.27
+2004-03-24	37266.49
+2004-03-26	48922.77
+2004-03-28	26906.68
+2004-03-29	21782.7
+2004-04-02	15330.7
+2004-04-14	43696.55
+2004-04-16	8722.12
+2004-04-17	17114.43
+2004-04-24	31302.5
+2004-04-25	42617.74
+2004-04-26	31329.56
+2004-04-30	1698.78
+2004-05-04	39341.23
+2004-05-12	36973.31
+2004-05-13	14380.92
+2004-05-14	7129
+2004-05-17	28327.64
+2004-05-22	76375.89
+2004-05-30	27987.07
+2004-06-15	50408.25
+2004-06-17	27931.21
+2004-06-21	95945.99
+2004-06-24	40034.67
+2004-07-01	65983.08
+2004-07-03	4749.45
+2004-07-07	45788.72
+2004-07-09	91328.4
+2004-07-10	44130.52
+2004-07-11	19548.35
+2004-07-18	56421.65
+2004-07-25	35911.81
+2004-07-26	23252.18
+2004-07-28	12334.82
+2004-08-01	6693.28
+2004-08-02	56407.94
+2004-08-08	56002.9
+2004-08-09	47760.48
+2004-08-11	3127.88
+2004-08-13	52505.36
+2004-08-16	21986.27
+2004-08-20	34453.85
+2004-08-28	93928.73
+2004-08-30	43332.35
+2004-09-04	56078.26
+2004-09-05	82974.19
+2004-09-07	71930.61
+2004-09-09	2173.6
+2004-09-11	39775.74
+2004-09-16	42902.84
+2004-09-18	67281.01
+2004-09-19	54402.1
+2004-09-21	23018.02
+2004-09-24	4692.6
+2004-09-28	34993.92
+2004-09-30	53941.69
+2004-10-03	18971.96
+2004-10-19	5307.98
+2004-10-21	42744.06
+2004-10-22	59074.88
+2004-10-24	27445.31
+2004-10-26	3220.88
+2004-10-28	54251.66
+2004-11-01	34872.13
+2004-11-02	123349
+2004-11-03	57827.61
+2004-11-04	19769.68
+2004-11-06	115816.44
+2004-11-08	36576.71
+2004-11-13	31446.15
+2004-11-14	23636.11
+2004-11-15	34546.6
+2004-11-16	107707.03
+2004-11-17	55570.6
+2004-11-18	9214.97
+2004-11-19	59969.48
+2004-11-23	48996.1
+2004-11-27	86857.54
+2004-11-28	40652.85
+2004-11-29	44802.04
+2004-12-01	24078.61
+2004-12-02	53152.28
+2004-12-03	13463.48
+2004-12-04	56812.67
+2004-12-05	41696.69
+2004-12-06	32778.3
+2004-12-07	27733.04
+2004-12-08	79311
+2004-12-11	20136.86
+2004-12-12	66005.88
+2004-12-13	13739.9
+2004-12-14	41706.52
+2004-12-15	85591.32
+2004-12-17	43792.96
+2004-12-18	2311.68
+2004-12-24	43930.62
+2004-12-27	50547.68
+2004-12-30	32623.93
+2004-12-31	192182.03
+2005-01-03	37905.15
+2005-01-10	48895.59
+2005-01-18	11021.3
+2005-01-27	51373.49
+2005-01-29	2317.44
+2005-02-02	13529.57
+2005-02-03	16628.16
+2005-02-06	44273.36
+2005-02-09	29852.17
+2005-02-12	31474.78
+2005-02-14	38191.39
+2005-02-15	49055.4
+2005-02-18	51826.36
+2005-02-22	59617.44
+2005-03-01	21730.03
+2005-03-02	3987.2
+2005-03-10	26422.82
+2005-03-15	54203.62
+2005-03-18	90135.87
+2005-03-25	95065.46
+2005-03-27	4175.6
+2005-04-15	37557.7
+2005-04-16	121972.78
+2005-04-18	31606.72
+2005-04-30	35160.25
+2005-05-03	8775.16
+2005-05-17	20321.53
+2005-05-19	22353.86
+2005-05-23	39267.74
+2005-06-03	47333.91
+2005-06-09	52029.07
+2005-06-25	34332.29
+
+/* (h) Report the products that have not been sold. */
+	select * from products WHERE productCode NOT IN(select distinct productCode from orderDetails)
+
+productCode	productName	productLine	productScale	productVendor	productDescription	quantityInStock	buyPrice	MSRP
+S18_3233	1985 Toyota Supra	Classic Cars	1899-12-30 01:18:00.000	Highway 66 Mini Classics	This model features soft rubber tires, working steering, rubber mud guards, authentic Ford logos, detailed undercarriage, opening doors and hood, removable split rear gate, full size spare mounted in bed, detailed interior with opening glove box	7733	57.01	107.57
+  
+/* (i) List the amount paid by each customer.*/
+		select c.customerName, SUM(od.priceEach*od.quantityOrdered) amountPaid
+			from orders o
+				inner join orderDetails od on o.orderNumber=od.orderNumber
+				inner join customers c on c.customerNumber=o.customerNumber
+		GROUP BY c.customerName
+
+customerName	amountPaid
+Daedalus Designs Imports	69052.41
+Online Diecast Creations Co.	131685.3
+Double Decker Gift Stores, Ltd	36019.04
+Rovelli Gifts	137955.72
+Tekni Collectables Inc.	83228.19
+Salzburg Collectables	149798.63
+Motor Mint Distributors Inc.	83682.16
+Atelier graphique	24179.96
+Iberia Gift Imports, Corp.	54723.62
+Corrida Auto Replicas, Ltd	120615.28
+Osaka Souveniers Co.	67605.07
+Extreme Desk Decorations, Ltd	98496.43
+Vitachrome Inc.	88041.26
+Bavarian Collectables Imports, Co.	34993.92
+La Rochelle Gifts	180124.94
+Super Scale Inc.	79472.07
+GiftsForHim.com	104603.05
+Clover Collections, Co.	57756.43
+Classic Legends Inc.	77795.2
+Canadian Gift Exchange Network	75238.92
+Muscle Machine Inc	197736.94
+Amica Models & Co.	94117.26
+Auto Canal+ Petit	93170.66
+Royale Belge	33440.1
+Norway Gifts By Mail, Co.	79224.23
+Toys of Finland, Co.	111250.38
+Handji Gifts& Co	115498.73
+Diecast Classics Inc.	122138.14
+Danish Wholesale Imports	145041.6
+Mini Gifts Distributors Ltd.	654858.04
+Diecast Collectables	70859.78
+Dragon Souveniers, Ltd.	172989.68
+Cruz & Sons Co.	94015.73
+Toys4GrownUps.com	104561.96
+Petit Auto	74972.52
+Saveley & Henriot, Co.	142874.25
+Oulu Toy Supplies, Inc.	104370.38
+Reims Collectables	135042.94
+Online Mini Collectables	57197.96
+Signal Collectibles Ltd.	50218.51
+Heintze Collectables	100595.55
+Baane Mini Imports	116599.19
+Cambridge Collectables Co.	36163.62
+Mini Wheels Co.	74476.18
+The Sharp Gifts Warehouse	160010.27
+Toms Spezialitï¿½ten, Ltd	100306.58
+Royal Canadian Collectables, Ltd.	74634.85
+Land of Toys Inc.	164069.44
+West Coast Collectables Co.	46084.64
+Lyon Souveniers	78570.34
+Gift Depot Inc.	101894.79
+Euro+ Shopping Channel	912294.11
+FunGiftIdeas.com	98923.77
+Auto Associï¿½s & Cie.	64834.3
+Classic Gift Ideas, Inc	67506.97
+Gift Ideas Corp.	57294.42
+Gifts4AllAges.com	83209.88
+L'ordine Souveniers	142601.33
+Signal Gift Stores	82751.08
+Alpha Cognac	70488.44
+Kelly's Gift Shop	158344.79
+Souveniers And Things Co.	151570.98
+Mini Creations Ltd.	108951.13
+La Corne D'abondance, Co.	97203.68
+Australian Collectables, Ltd	64591.46
+Auto-Moto Classics Inc.	26479.26
+CAF Imports	49642.05
+Men 'R' US Retailers, Ltd.	48048.46
+Frau da Collezione	28951.91
+Blauer See Auto, Co.	85171.59
+Down Under Souveniers, Inc	174139.73
+Mini Classics	85555.99
+Vida Sport, Ltd	117713.56
+AV Stores, Co.	157807.81
+Boards & Toys Co.	9129.35
+Mini Caravy	80438.5
+Anna's Decorations, Ltd	153996.13
+Tokyo Collectables, Ltd	120562.74
+Australian Gift Network, Co	59469.12
+Corporate Gift Ideas Co.	149882.5
+Australian Collectors, Co.	200995.41
+Volvo Model Replicas, Co	75754.88
+UK Collectables, Ltd.	118008.27
+Herkku Gifts	111640.28
+giftsbymail.co.uk	78240.84
+Mini Auto Werke	52263.9
+Marseille Mini Autos	74936.14
+Technics Stores Inc.	120783.07
+Scandinavian Gift Ideas	134259.33
+Collectables For Less Inc.	81577.98
+Quï¿½bec Home Shopping Network	74204.79
+Enaco Distributors	78411.86
+King Kong Collectables, Co.	48784.36
+Collectable Mini Designs Co.	87489.23
+Microscale Inc.	33144.93
+Stylish Desk Decors, Co.	88804.5
+Marta's Replicas Co.	103080.38
+Suominen Souveniers	113961.15
+
+/* (j) List products sold by order date. */
+	select p.productName, MIN(orderDate) orderDate from orders o
+		inner join orderDetails od on o.orderNumber=od.orderNumber
+		inner join products p on p.productCode=od.productCode
+	GROUP BY p.productName
+	ORDER By MIN(orderDate)
+
+productName	orderDate
+1932 Alfa Romeo 8C2300 Spider Sport	2003-01-06
+1936 Mercedes Benz 500k Roadster	2003-01-06
+1911 Ford Town Car	2003-01-06
+1917 Grand Touring Sedan	2003-01-06
+1938 Cadillac V-16 Presidential Limousine	2003-01-09
+1932 Model A Ford J-Coupe	2003-01-09
+1939 Chevrolet Deluxe Coupe	2003-01-09
+1928 Mercedes-Benz SSK	2003-01-09
+1937 Lincoln Berline	2003-01-10
+1936 Mercedes-Benz 500K Special Roadster	2003-01-10
+1940s Ford truck	2003-01-29
+1996 Peterbilt 379 Stake Bed with Outrigger	2003-01-29
+1982 Camaro Z28	2003-01-29
+1962 Volkswagen Microbus	2003-01-29
+1940 Ford Pickup Truck	2003-01-29
+1934 Ford V8 Coupe	2003-01-29
+1952 Alpine Renault 1300	2003-01-29
+1962 LanciaA Delta 16V	2003-01-29
+1917 Maxwell Touring Car	2003-01-29
+1926 Ford Fire Engine	2003-01-29
+1913 Ford Model T Speedster	2003-01-29
+18th Century Vintage Horse Carriage	2003-01-29
+1980ï؟½s GM Manhattan Express	2003-01-29
+1958 Setra Bus	2003-01-29
+1936 Chrysler Airflow	2003-01-29
+1939 Cadillac Limousine	2003-01-29
+1969 Corvair Monza	2003-01-31
+1970 Triumph Spitfire	2003-01-31
+Diamond T620 Semi-Skirted Tanker	2003-01-31
+1954 Greyhound Scenicruiser	2003-01-31
+1992 Ferrari 360 Spider red	2003-01-31
+1958 Chevy Corvette Limited Edition	2003-01-31
+1950's Chicago Surface Lines Streetcar	2003-01-31
+1998 Chrysler Plymouth Prowler	2003-01-31
+1964 Mercedec Tour Bus	2003-01-31
+1970 Dodge Coronet	2003-01-31
+1962 City of Detroit Streetcar	2003-01-31
+1992 Porsche Cayenne Turbo Silver	2003-01-31
+1957 Chevy Pickup	2003-01-31
+Pont Yacht	2003-02-11
+The Titanic	2003-02-11
+The Queen Mary	2003-02-11
+18th century schooner	2003-02-11
+The Schooner Bluenose	2003-02-11
+Collectable Wooden Train	2003-02-11
+The USS Constitution Ship	2003-02-11
+1912 Ford Model T Delivery Wagon	2003-02-11
+1904 Buick Runabout	2003-02-11
+1940 Ford Delivery Sedan	2003-02-11
+2001 Ferrari Enzo	2003-02-11
+1972 Alfa Romeo GTA	2003-02-11
+1969 Ford Falcon	2003-02-11
+1903 Ford Model A	2003-02-11
+The Mayflower	2003-02-11
+Corsair F4U ( Bird Cage)	2003-02-17
+America West Airlines B757-200	2003-02-17
+1937 Horch 930V Limousine	2003-02-17
+1941 Chevrolet Special Deluxe Cabriolet	2003-02-17
+1928 British Royal Navy Airplane	2003-02-17
+1900s Vintage Bi-Plane	2003-02-17
+1900s Vintage Tri-Plane	2003-02-17
+Boeing X-32A JSF	2003-02-17
+1999 Yamaha Speed Boat	2003-02-17
+1980s Black Hawk Helicopter	2003-02-17
+1928 Ford Phaeton Deluxe	2003-02-17
+HMS Bounty	2003-02-17
+ATA: B757-300	2003-02-17
+American Airlines: B767-300	2003-02-17
+F/A 18 Hornet 1/72	2003-02-17
+1930 Buick Marquette Phaeton	2003-02-17
+P-51-D Mustang	2003-02-17
+American Airlines: MD-11S	2003-02-17
+1960 BSA Gold Star DBD34 1960	2003-02-24
+1996 Moto Guzzi 1100i	2003-02-24
+1997 BMW F650 ST	2003-02-24
+1936 Harley Davidson El Knucklehead	2003-02-24
+1997 BMW R 1100 S	2003-02-24
+1969 Harley Davidson Ultimate Chopper	2003-02-24
+2003 Harley-Davidson Eagle Drag Bike	2003-02-24
+2002 Suzuki XREO	2003-02-24
+1974 Ducati 350 Mk3 Desmo	2003-03-03
+1948 Porsche 356-A Roadster	2003-03-03
+1969 Dodge Super Bee	2003-03-03
+1956 Porsche 356A Coupe	2003-03-03
+1976 Ford Gran Torino	2003-03-03
+1957 Vespa GS150	2003-03-03
+2002 Yamaha YZR M1	2003-03-03
+1969 Dodge Charger	2003-03-03
+1968 Ford Mustang	2003-03-03
+1968 Dodge Charger	2003-03-03
+1971 Alpine Renault 1600s	2003-03-03
+1961 Chevrolet Impala	2003-03-03
+1982 Ducati 996 R	2003-03-03
+1957 Corvette Convertible	2003-03-03
+1982 Ducati 900 Monster	2003-03-03
+1970 Plymouth Hemi Cuda	2003-03-03
+1993 Mazda RX-7	2003-03-10
+1995 Honda Civic	2003-03-10
+1999 Indy 500 Monte Carlo SS	2003-03-10
+1948 Porsche Type 356 Roadster	2003-03-10
+1982 Lamborghini Diablo	2003-03-10
+1970 Chevy Chevelle SS 454	2003-03-18
+1957 Ford Thunderbird	2003-03-18
+1952 Citroen-15CV	2003-03-18
+1949 Jaguar XK 120	2003-03-18
+1969 Chevrolet Camaro Z28	2003-03-18
+1965 Aston Martin DB5	2003-03-18
+1966 Shelby Cobra 427 S/C	2003-03-18
+2002 Chevy Corvette	2003-03-18
+		
+/* (k) List the order dates in descending order for orders for the 1940 Ford Pickup Truck.*/
+	
+	select orderDate from orders o
+		inner join orderDetails od on o.orderNumber=od.orderNumber
+		inner join products p on p.productCode=od.productCode
+	where p.productName='1940 Ford Pickup Truck'
+	order by orderDate desc
+
+orderDate
+2005-05-31
+2005-05-01
+2005-03-09
+2005-02-17
+2005-01-20
+2004-12-10
+2004-11-29
+2004-11-18
+2004-11-04
+2004-10-21
+2004-10-11
+2004-09-08
+2004-08-17
+2004-07-19
+2004-06-15
+2004-05-04
+2004-03-10
+2004-01-29
+2003-12-05
+2003-11-25
+2003-11-13
+2003-11-06
+2003-10-21
+2003-09-19
+2003-07-24
+2003-05-28
+2003-03-26
+2003-01-29
+
+/* (l) List the names of customers and their corresponding order number where a particular order from that customer has a value greater than $25,000?*/
+	select c.customerName, o.orderNumber from orders o 
+		inner join orderDetails od on o.orderNumber=od.orderNumber
+		inner join customers c on c.customerNumber=o.customerNumber
+		GROUP By c.customerName, o.orderNumber
+		having SUM(od.priceEach*od.quantityOrdered)>25000
+
+customerName	orderNumber
+Baane Mini Imports	10103
+Euro+ Shopping Channel	10104
+Danish Wholesale Imports	10105
+Rovelli Gifts	10106
+Land of Toys Inc.	10107
+Cruz & Sons Co.	10108
+Motor Mint Distributors Inc.	10109
+AV Stores, Co.	10110
+La Corne D'abondance, Co.	10114
+Dragon Souveniers, Ltd.	10117
+Salzburg Collectables	10119
+Australian Collectors, Co.	10120
+Marseille Mini Autos	10122
+Signal Gift Stores	10124
+Corrida Auto Replicas, Ltd	10126
+Muscle Machine Inc	10127
+Stylish Desk Decors, Co.	10129
+Lyon Souveniers	10134
+Mini Gifts Distributors Ltd.	10135
+Kelly's Gift Shop	10138
+Souveniers And Things Co.	10139
+Technics Stores Inc.	10140
+Suominen Souveniers	10141
+Mini Gifts Distributors Ltd.	10142
+Mini Creations Ltd.	10143
+Toys4GrownUps.com	10145
+Collectables For Less Inc.	10147
+Anna's Decorations, Ltd	10148
+Signal Collectibles Ltd.	10149
+Dragon Souveniers, Ltd.	10150
+Oulu Toy Supplies, Inc.	10151
+Euro+ Shopping Channel	10153
+Toys of Finland, Co.	10155
+Corporate Gift Ideas Co.	10159
+Heintze Collectables	10161
+Corporate Gift Ideas Co.	10162
+Classic Legends Inc.	10163
+Mini Auto Werke	10164
+Dragon Souveniers, Ltd.	10165
+Scandinavian Gift Ideas	10167
+Technics Stores Inc.	10168
+Anna's Decorations, Ltd	10169
+Gift Depot Inc.	10172
+Rovelli Gifts	10173
+Australian Gift Network, Co	10174
+Stylish Desk Decors, Co.	10175
+L'ordine Souveniers	10176
+CAF Imports	10177
+Alpha Cognac	10178
+Kelly's Gift Shop	10179
+Daedalus Designs Imports	10180
+Herkku Gifts	10181
+Mini Gifts Distributors Ltd.	10182
+Classic Gift Ideas, Inc	10183
+Iberia Gift Imports, Corp.	10184
+Mini Creations Ltd.	10185
+Double Decker Gift Stores, Ltd	10186
+King Kong Collectables, Co.	10187
+Herkku Gifts	10188
+Toms Spezialitï¿½ten, Ltd	10191
+Online Diecast Creations Co.	10192
+Australian Collectables, Ltd	10193
+Saveley & Henriot, Co.	10194
+Mini Classics	10195
+Super Scale Inc.	10196
+Enaco Distributors	10197
+Mini Wheels Co.	10201
+Euro+ Shopping Channel	10203
+Muscle Machine Inc	10204
+Canadian Gift Exchange Network	10206
+Diecast Collectables	10207
+Saveley & Henriot, Co.	10208
+Osaka Souveniers Co.	10210
+Auto Canal+ Petit	10211
+Euro+ Shopping Channel	10212
+West Coast Collectables Co.	10215
+Clover Collections, Co.	10220
+Collectable Mini Designs Co.	10222
+Australian Collectors, Co.	10223
+Vida Sport, Ltd	10225
+Collectable Mini Designs Co.	10226
+Saveley & Henriot, Co.	10227
+Mini Gifts Distributors Ltd.	10229
+Blauer See Auto, Co.	10230
+giftsbymail.co.uk	10232
+Extreme Desk Decorations, Ltd	10234
+Royal Canadian Collectables, Ltd.	10235
+Danish Wholesale Imports	10238
+Mini Caravy	10241
+Euro+ Shopping Channel	10244
+Super Scale Inc.	10245
+Euro+ Shopping Channel	10246
+Suominen Souveniers	10247
+Land of Toys Inc.	10248
+The Sharp Gifts Warehouse	10250
+Tekni Collectables Inc.	10251
+Auto Canal+ Petit	10252
+UK Collectables, Ltd.	10253
+Down Under Souveniers, Inc	10254
+Tokyo Collectables, Ltd	10258
+Handji Gifts& Co	10259
+GiftsForHim.com	10260
+Euro+ Shopping Channel	10262
+Gift Depot Inc.	10263
+L'ordine Souveniers	10266
+Extreme Desk Decorations, Ltd	10268
+Souveniers And Things Co.	10270
+Mini Gifts Distributors Ltd.	10271
+Diecast Classics Inc.	10272
+Petit Auto	10273
+La Rochelle Gifts	10275
+Online Mini Collectables	10276
+Signal Gift Stores	10278
+Amica Models & Co.	10280
+Diecast Classics Inc.	10281
+Mini Gifts Distributors Ltd.	10282
+Royal Canadian Collectables, Ltd.	10283
+Norway Gifts By Mail, Co.	10284
+Marta's Replicas Co.	10285
+Vida Sport, Ltd	10287
+Handji Gifts& Co	10288
+Scandinavian Gift Ideas	10291
+Land of Toys Inc.	10292
+Amica Models & Co.	10293
+Bavarian Collectables Imports, Co.	10296
+Toys of Finland, Co.	10299
+Blauer See Auto, Co.	10300
+Norway Gifts By Mail, Co.	10301
+UK Collectables, Ltd.	10302
+Auto Associï¿½s & Cie.	10304
+Marta's Replicas Co.	10305
+AV Stores, Co.	10306
+Classic Gift Ideas, Inc	10307
+Mini Classics	10308
+Toms Spezialitï¿½ten, Ltd	10310
+Euro+ Shopping Channel	10311
+Mini Gifts Distributors Ltd.	10312
+Canadian Gift Exchange Network	10313
+Heintze Collectables	10314
+giftsbymail.co.uk	10316
+Diecast Classics Inc.	10318
+Microscale Inc.	10319
+FunGiftIdeas.com	10321
+Online Diecast Creations Co.	10322
+Vitachrome Inc.	10324
+Baane Mini Imports	10325
+Rovelli Gifts	10328
+Land of Toys Inc.	10329
+Motor Mint Distributors Inc.	10331
+AV Stores, Co.	10332
+Mini Wheels Co.	10333
+Volvo Model Replicas, Co	10334
+La Corne D'abondance, Co.	10336
+Classic Legends Inc.	10337
+Tokyo Collectables, Ltd	10339
+Enaco Distributors	10340
+Salzburg Collectables	10341
+Australian Collectors, Co.	10342
+Australian Collectors, Co.	10347
+Corrida Auto Replicas, Ltd	10348
+Muscle Machine Inc	10349
+Euro+ Shopping Channel	10350
+Gift Ideas Corp.	10353
+Down Under Souveniers, Inc	10354
+Euro+ Shopping Channel	10355
+Lyon Souveniers	10356
+Mini Gifts Distributors Ltd.	10357
+Euro+ Shopping Channel	10358
+Reims Collectables	10359
+Kelly's Gift Shop	10360
+Souveniers And Things Co.	10361
+Suominen Souveniers	10363
+Toys4GrownUps.com	10367
+Collectables For Less Inc.	10369
+Anna's Decorations, Ltd	10370
+Mini Gifts Distributors Ltd.	10371
+Tokyo Collectables, Ltd	10372
+Oulu Toy Supplies, Inc.	10373
+La Rochelle Gifts	10375
+Toys of Finland, Co.	10377
+Euro+ Shopping Channel	10378
+Euro+ Shopping Channel	10380
+Corporate Gift Ideas Co.	10381
+Mini Gifts Distributors Ltd.	10382
+Euro+ Shopping Channel	10383
+Euro+ Shopping Channel	10386
+FunGiftIdeas.com	10388
+Scandinavian Gift Ideas	10389
+Mini Gifts Distributors Ltd.	10390
+Anna's Decorations, Ltd	10391
+Down Under Souveniers, Inc	10393
+Mini Gifts Distributors Ltd.	10396
+Reims Collectables	10398
+Kelly's Gift Shop	10399
+The Sharp Gifts Warehouse	10400
+Tekni Collectables Inc.	10401
+UK Collectables, Ltd.	10403
+Down Under Souveniers, Inc	10404
+Mini Caravy	10405
+Danish Wholesale Imports	10406
+The Sharp Gifts Warehouse	10407
+GiftsForHim.com	10410
+Quï¿½bec Home Shopping Network	10411
+Euro+ Shopping Channel	10412
+Gift Depot Inc.	10413
+Gifts4AllAges.com	10414
+L'ordine Souveniers	10416
+Euro+ Shopping Channel	10417
+Extreme Desk Decorations, Ltd	10418
+Salzburg Collectables	10419
+Souveniers And Things Co.	10420
+Euro+ Shopping Channel	10424
+La Rochelle Gifts	10425
+
+/* (m) Compute the commission for each sales representative, assuming the commission is 5% of the
+value of an order. Sort by employee last name and rst name.*/
+	select e.firstName, e.lastName, SUM(od.priceEach*od.quantityOrdered)*0.05 Commission from orders o 
+		inner join orderDetails od on o.orderNumber=od.orderNumber
+		inner join customers c on c.customerNumber=o.customerNumber
+		inner join employees e on c.salesRepEmployeeNumber=e.employeeNumber
+	GROUP By e.firstName, e.lastName
+	ORder by e.lastName, e.firstName
+
+firstName	lastName	Commission
+Loui	Bondur	31089.9005
+Larry	Bott	40423.1185
+Pamela	Castillo	47986.926
+Julie	Firrelli	21112.872
+Andy	Fixter	31531.155
+Martin	Gerard	21055.3185
+Gerard	Hernandez	70070.633
+Leslie	Jennings	60511.4285
+Barry	Jones	39785.3215
+Peter	Marsh	32554.1365
+Mami	Nishi	25197.879
+Steve	Patterson	28275.8365
+Leslie	Thompson	18903.236
+Foon Yue	Tseng	27519.7595
+George	Vanauf	36279.938
+
+/* (n) What is the dierence in days between the most recent and oldest order date in the Orders le?*/
+	select datediff(d, min(orderDate), max(orderDate)) FROM orders
+
+	876
+
+/* (o) Compute the average time between order date and ship date for each customer ordered by the largest diference.*/
+	select customerNumber, AVG(datediff(DAY, orderDate, shippedDate)) averageTime FROM orders
+	GROUP By customerNumber
+	ORDER BY AVG(datediff(DAY, orderDate, shippedDate)) DESC
+
+customerNumber	averageTime
+148	14
+177	7
+204	5
+205	5
+209	5
+198	5
+219	5
+161	5
+240	5
+276	5
+328	5
+344	5
+363	5
+385	5
+398	5
+448	5
+455	5
+462	5
+471	4
+456	4
+458	4
+475	4
+484	4
+486	4
+424	4
+489	4
+386	4
+347	4
+350	4
+339	4
+319	4
+320	4
+278	4
+282	4
+299	4
+311	4
+233	4
+250	4
+256	4
+128	4
+181	4
+189	4
+171	4
+175	4
+167	3
+172	3
+173	3
+211	3
+216	3
+114	3
+119	3
+121	3
+146	3
+157	3
+141	3
+144	3
+259	3
+260	3
+239	3
+202	3
+249	3
+286	3
+321	3
+324	3
+333	3
+334	3
+353	3
+379	3
+382	3
+496	3
+447	3
+406	3
+412	3
+487	3
+473	3
+450	2
+452	2
+495	2
+381	2
+357	2
+362	2
+323	2
+298	2
+242	2
+145	2
+151	2
+166	2
+124	2
+129	2
+131	2
+103	2
+112	2
+227	2
+187	2
+186	1
+201	1
+314	1
+415	1
