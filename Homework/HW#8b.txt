@@ -1,0 +1,76 @@
+--Shae Morlis
+--February 16, 2021
+
+
+
+
+1. The sales tax rate for a state just changed. How would you update the state sales tax table to reflect
+the changes? Assume that this table has an ID column, an RATE column, and a STATE column.
+
+I would use the INSERT INTO statement to update all three colums with the new values. 
+
+
+2. The Revenue Division has requested that you provide a report on what the actual sales taxes would
+have been for all orders in the past year, assuming the retroactivity of the new sales tax rate. How
+would you calculate this?
+
+
+
+3. Explain how the proprietary assignment update command works.
+
+T-SQL supports a proprietary UPDATE syntax that both updates data in a table and assigns values to variables at the same time. 
+This syntax saves you the need to use separate UPDATE and SELECT statements to achieve the same task.
+
+4. What is one very important purpose of the MERGE SQL statement? What is ETL (not in book)?
+T-SQL supports a statement called MERGE you can use to merge data from a source into a target, 
+applying different actions (INSERT, UPDATE, and DELETE) based on conditional logic. ETL stands for Extract, 
+Transform and Load, which is a process used to collect data from various sources, 
+transform the data depending on business rules/needs and load the data into a destination database.
+The MERGE statement is part of the SQL standard, although the T-SQL version adds a few nonstandard extensions
+
+5. What are the semantics of MERGE?
+The MERGE statement is used to make changes in one table based on values matched from anther. 
+It can be used to combine insert, update, and delete operations into one statement. 
+
+6. Write a typical INSERT OUTPUT statement.
+
+INSERT INTO dbo.T1(datacol)  OUTPUT inserted.keycol, inserted.datacol    
+SELECT lastname    FROM HR.Employees    WHERE country = N'USA';
+
+7. Write a typical UPDATE OUTPUT statement.
+This creates a copy of the Sales.OrderDetails table from the Sales schema in the dbo schema.
+
+UPDATE dbo.OrderDetails  SET discount += 0.05OUTPUT  inserted.orderid,  
+inserted.productid,  deleted.discount AS olddiscount,  inserted.discount AS newdiscountWHERE productid = 51;
+
+8. Write a typical DELETE OUTPUT statement.
+DELETE FROM dbo.Orders  OUTPUT    deleted.orderid,    deleted.orderdate,    deleted.empid,    deleted.custidWHERE orderdate < '20160101';
+
+9. Write a typical MERGE OUTPUT statement.
+This statment merges the contents of CustomersStage into Customers, 
+updating the attributes of customers who already exist in the target and adding customers who don’t
+
+MERGE INTO dbo.Customers AS TGTUSING dbo.CustomersStage AS SRC  
+ON TGT.custid = SRC.custidWHEN MATCHED THEN  UPDATE SET    
+TGT.companyname = SRC.companyname,    TGT.phone = SRC.phone,    
+TGT.address = SRC.addressWHEN NOT MATCHED THEN  INSERT (custid, companyname, phone, address)  
+VALUES (SRC.custid, SRC.companyname, SRC.phone, SRC.address)OUTPUT $action AS theaction, inserted.custid,  deleted.companyname AS oldcompanyname,  
+inserted.companyname AS newcompanyname,  deleted.phone AS oldphone,  inserted.phone AS newphone,  deleted.address AS oldaddress,  inserted.address AS newaddress;
+
+11. (Not in book) Write a query adding a new column to a table named PERSON. The new column name
+is DayOfBirth and the data type is string. Use ANSI SQL syntax.
+ALTER TABLE PERSON
+ADD column_DayOfBirth string; 
+
+
+12. (Not in book) Write a query adding a DEFAULT constraint to the column DayOfBirth. The constraint
+is that the value matches one of SUN, MON, TUE, WED, THU, FRI, or SAT.
+ALTER TABLE PERSON
+ADD CONSTRAINT df_DayOfBirth
+DEFAULT 'SUN' FOR DayOfBirth 
+
+13. (Not in book) Write a query adding a foreign key to the column DayOfBirth. The referenced table is
+named WEEK and the referenced column is ValidDay.
+
+CREATE TABLE WEEK(
+FOREIGN KEY (DayOfBirth)

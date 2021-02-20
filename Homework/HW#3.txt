@@ -1,0 +1,35 @@
+Shaevaun Morlis
+SQL HW#3
+
+
+1. In general, why would you even want to join two (or more) tables together? This is a good time to
+think about the nature of relational algebra.
+
+Use an SQL INNER JOIN when you need to match rows from two tables.  
+Rows that match remain in the result, those that don’t are rejected. 
+A common situation is where you need to join the primary key of one table to the foreign key of another. 
+
+2. Describe in your own words the output from an inner join.
+
+The INNER JOIN in SQL joins two tables according to the matching of a certain criteria using a comparison operator.
+The result returns matching rows in both these tables.
+
+3. Describe in your own words the output from an outer join.
+returns all (matched or unmatched) rows from the tables on both sides of the join clause.
+
+4. Describe in your own words the output from an cross join.
+The SQL CROSS JOIN produces a result set which is the number of rows in the first table multiplied by the number of rows in the second table if no WHERE clause is used along with CROSS JOIN.This kind of result is called as Cartesian Product.
+
+5. A convenient mnemonic for remembering the various joins is \Ohio." Why is this true?
+
+6. Give an example of a composite join.
+
+A Composite Join is a join where you need to match multiple attributes from each side. 
+An example of this is if you needed audit the stock of a company inventory.
+You would create an inventory audit table with various attributes{stock no, stock amt, last checked, ordered amt) from different tables to view different all of the data in one place.
+
+
+7. What is the difference between the following two queries? The business problem is \How many orders
+do we have from each customer?"
+
+The first query will show the count of orders from each customer, but it will show customers who did not place orders with a value of 1(they both have an outer row in the result of the JOIN). With the second query the count will ignore the outer rows because they have a NULL value, thus returning a 0 for customers who never ordered anything.

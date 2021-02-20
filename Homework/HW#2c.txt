@@ -1,0 +1,42 @@
+Shaevaun Morlis
+24 January 2021
+
+1.	List the date/time types in T-SQL.
+time	hh:mm:ss[.nnnnnnn]
+date	YYYY-MM-DD
+smalldatetime	YYYY-MM-DD hh:mm:ss
+datetime	YYYY-MM-DD hh:mm:ss[.nnn]
+datetime2	YYYY-MM-DD hh:mm:ss[.nnnnnnn]
+datetimeoffset	YYYY-MM-DD hh:mm:ss[.nnnnnnn] [+|-]hh:mm
+2. How do you express a date/time literal in T-SQL? 
+datetime string literals are in single quotation marks (')
+3.	What is the setting DATEFORMAT used for?
+You can specify date data with a numeric month specified. For example, 5/20/97 represents the twentieth day of May 1997. When you use numeric date format, specify the month, day, and year in a string that uses slash marks (/), hyphens (-), or periods (.) as separators.
+4. Write a T-SQL snippet changing the date format to German. Read the documentation on how to do
+this.
+@d, 'D', 'de-de'
+Sonntag, 22. November 2020
+
+5. What is the difference between CAST(), CONVERT(), and PARSE()? 
+CAST- 1st argument, translated to the requested data type as provided by the 2nd argument.
+CONVERT- 2nd argument, translated to the requested data type as provided by the 1st argument.
+PARSE- Returns the result of an expression, translated to the requested data type in SQL Server. From string to date/time and number types only. 
+6. What function returns the current date? This is very useful in a table that maintains a log of events,
+such as user logins.
+ The GETDATE() function returns the current database system date and time, in a 'YYYY-MM-DD hh:mm:ss. mmm' format.
+
+7. How do you add one day to the current date? Add one week? Add one month? Add one year?
+The DATEADD() function adds a time/date interval to a date and then returns the date.
+SELECT DATEADD(year, 1, '2017/08/25') AS DateAdd;
+SELECT DATEADD(week, 1, '2017/08/25') AS DateAdd;
+SELECT DATEADD(month, 1, '2017/08/25') AS DateAdd; 
+8. Write a SQL snippet to return the number of years between your birth date and today's date.
+SELECT DATEDIFF(year, '1991/08/21', '2021/01/24') AS DateDiff;
+9. How do you check a string literal to see if it represents a valid date? 
+The ISDATE program determines whether a text expression represents a valid date. ISDATE only tests a text expression to see if it can be converted to a DATE-only value; it does not actually make the conversion. You must use CONVERT to make the conversion.
+10. What does EOMONTH() do? Give an example of why this might be very useful.
+The EOMONTH() function returns the last day of the month of a specified date, with an optional offset. The EOMONTH() function accepts two arguments: start_date is a date expression that evaluates to a date.
+11. Payments are due exactly 30 days from the date of the last function. Write a select query that calculates the date of the next payment. Pretend we want to update a column in a database that contains the date of the next payment. We will do this when we write UPDATE queries.
+SELECT DATEADD(day, 30, '2021/01/24') AS DateAdd;
+12. Suppose your son or daughter wants to run a query every day that tells them the number of days until their 16th birthday. Write a select query that does this.
+SELECT DATEDIFF (day, ‘today’s date’, ‘birthday date’)
