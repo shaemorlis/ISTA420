@@ -1,0 +1,25 @@
+Shae Morlis
+TSQL HW#4
+
+1. In your own words, what is a subquery? The SQL subquery is a SELECT query that is embedded in the main SELECT statement. 
+2. In your own words, what is a self contained subquery? self-contained subqueries are independent of the outer query. the subquery is executed first, and the result is inserted into the WHERE clause of the outer query. 
+3. In your own words, what is a correlated subquery? correlated subquery has a reference to an element from the table in the outer query. the OUTER query is executed first, and the subquery is executed for every row returned by the outer query.
+4. Give an example of a subquery that returns a single value. When would you use this kind of subquery?
+A subquery guaranteed to return a single value is known as a scalar subquery. Youre selecting records that are special relative to the group
+SELECT orderid, orderdate, empid, custidFROM Sales.OrdersWHERE orderid = @maxid; 
+5. Give an example of a subquery that returns multiple values. When would you use this kind of subquery? A multivalued subquery is a subquery that returns multiple values as a single column. Some predicates, such as the IN predicate, operate on a multivalued subquery. 
+SELECT orderidFROM Sales.OrdersWHERE empid IN  (SELECT E.empid   FROM HR.Employees AS E   WHERE E.lastname LIKE N'D%'); 
+6. Give an example of a subquery that returns table values. When would you use this kind of subquery? 
+A table expression is a named query expression that represents a valid relational table. You can use table expressions in data-manipulation statements much like you use other tables. SELECT *FROM (SELECT custid, companyname      FROM Sales.Customers      WHERE country = N'USA') AS USACusts;
+7. What does the exists predicate do? Give an example. The EXISTS predicate evaluates to TRUE providing the subquery contains any rows, otherwise it evaluates to FALSE. 
+SELECT DISTINCT maker FROM Product AS Lap_product WHERE type = 'laptop' AND 
+ EXISTS (SELECT maker FROM Product WHERE type = 'printer' AND maker = Lap_product.maker );
+8. What happens if we use the not operator before a predicate? Give an example. NOT EXISTS works the same as EXISTS being satisfied if no rows are returnable by the subquery. The NOT operator negates the IN predicate; hence, the NOT TRUE becomes FALSE. 
+SELECT custid, companyname FROM Sales.CustomersWHERE custid NOT IN(SELECT O.custid FROM Sales.Orders AS O);
+9. When you use exists or not exists with respect to a row in a database, does it return two or three
+values? Explain your answer. Two Values. For example, the following query returns customers from Spain who did not place orders:
+SELECT custid, companynameFROM Sales.Customers AS C WHERE country = N'Spain'  AND NOT EXISTS (SELECT * FROM Sales.Orders AS O WHERE O.custid = C.custid);
+10. How would you use a subquery to calculate aggregates? For example, you want to calculate yearly
+sales of a product, and you also want to keep a running sum of total sales. Explain how you would use
+a subquery to do this.
+SELECT orderyear, qtyFROM Sales.OrderTotalsByYear;
